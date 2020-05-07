@@ -1,3 +1,4 @@
-# House_crack_find
-git config --global user.email "mill@dankook.ac.kr"
-git config --global user.name "SJ Heo"
+Dankook University, Dr.Heo SJ
+Conctact : mill@dankook.ac.kr
+
+
