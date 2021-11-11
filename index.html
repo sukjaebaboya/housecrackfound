@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -8,15 +7,15 @@
     <link href="https://fonts.googleapis.com/css?family=Jua&display=swap" rel="stylesheet">
     <meta name="naver-site-verification" content="f19e603cda1c4d8ba0d5c49bd7d8c209afc0b1c6" /> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <meta name="title" content="앵커진단인공지능">
-    <meta name="subject" content="">
-    <meta name="description" content=".">
+    <meta name="title" content="우리집자가진단시스템">
+    <meta name="subject" content="자가진단을 통한 안전한 주거생활">
+    <meta name="description" content="스마트폰으로 우리집에 발생한 균열을 자가진단 하고 안전한 주거생활을 누리세요.">
     <meta name="keywords" content="경주, 포항, 후쿠시마, 균열, 안전, 지진, 하중, 크랙, 건물, 우리집, 자가진단, 인공지능, 위험도, 판독, 벽체균열, 기둥균열, 대책,우리집균열, 원인, 공유하기, 건축구조, 지진피해, 태풍, 재해,아파트균열,벽균열,바닥균열, 안전진단, 우리집, 균열, 탐지, 균열사진">
     <meta name="author" content="허석재">
     <meta name="mail" content="mill@dankook.ac.kr">
-    <title>앵커설치상태진단기</title>
+    <title>인공지능 균열측정기 - 인공지능으로 균열이 위험한지 알아보세요</title>  
     <link rel="stylesheet" href="style.css">
-    <link rel="canonical" href="anchorstatus.netlify.app/">
+    <link rel="canonical" href="https://myhomecrackfound.netlify.app/">
     <script data-ad-client="ca-pub-9231444876987540" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5eb2082d012fa18b"></script>
@@ -26,12 +25,10 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-LLEB9RM521');
 </script>
     
 </head>
-
 <body>
      <ins class="kakao_ad_area" style="display:none;" 
  data-ad-unit    = "DAN-1jiflq1va94j8" 
@@ -39,17 +36,18 @@
  data-ad-height  = "50"></ins> 
 <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
     <section class="section">
-        <h1 class="title">앵커상태진단인공지능</h1>
-        <h2 class="subtitle">"앵커의 설치 상태를 점검할 수 있습니다."</h2>
+        <h1 class="title">인공지능 균열위험도 판독기</h1>
+        <h2 class="subtitle">"자가진단을 통해 우리집이 안전한지 알아보아요.(아직 바닥은 못해요. ^ㅡ^)"</h2>
+        <h1 class="title">인공지능 지진균열위험도 판독기</h1>
+        <h2 class="subtitle">"지진으로 발생한 균열의 위험도를 판단할 수 있습니다."</h2>
     </section>
 
     <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-
     <div class="image-upload-wrap">
         <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
         <div class="drag-text">
             <img src="images/upload.svg" class="mt-5 pt-5 upload">
-            <h3 class="mb-5 pb-5 pt-4  upload-text">여기를 눌러서 앵커설치부위 사진을 찍거나 눌러서 업로드하세요.</h3>
+            <h3 class="mb-5 pb-5 pt-4  upload-text">여기를 눌러서 균열부위 사진을 찍거나 눌러서 업로드하세요.</h3>
         </div>
     </div>
     <div class="file-upload-content">
@@ -66,17 +64,14 @@
         <div id="label-container"></div>
             <!-- Go to www.addthis.com/dashboard to customize your tools -->            
     <div class="addthis_inline_share_toolbox" id="kakao"></div>
-
         <div class="image-title-wrap">
-            <button type="button" onclick="location.href='https://anchorstatus.netlify.app/';" class="remove-image">지우고 다시하기</button>
+            <button type="button" onclick="location.href='https://myhomecrackfound.netlify.app';" class="remove-image">지우고 다시하기</button>
         </div>
-
     </div>
     <div>
         <!-- 기능 -->
         <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-
         <script>
             function readURL(input) {
                 if (input.files && input.files[0]) {
@@ -103,7 +98,6 @@
                     removeUpload();
                 }
             }
-
             function removeUpload() {
                 $('.file-upload-input').replaceWith($('.file-upload-input').clone());
                 $('.file-upload-content').hide();
@@ -122,7 +116,7 @@
             let model2, webcam2, labelContainer2, maxPredictions2, result2;
             let resultTitle, resultExplain, resultCeleb, title, result, analy;
             async function init() {
-                const URL = "https://teachablemachine.withgoogle.com/models/cUW1JqsXU/";
+                const URL = "https://teachablemachine.withgoogle.com/models/kx8FXr73V/";
                 const modelURL = URL + "model.json";
                 const metadataURL = URL + "metadata.json";
                 model = await tmImage.load(modelURL, metadataURL);
@@ -142,7 +136,7 @@
             }
             // 2차분석시작
             async function init2() {
-                const URL2 = "https://teachablemachine.withgoogle.com/models/cUW1JqsXU/";
+                const URL2 = "https://teachablemachine.withgoogle.com/models/iylRCPJXS/";
                 const modelURL2 = URL2 + "model.json";
                 const metadataURL2 = URL2 + "metadata.json";
                 model2 = await tmImage.load(modelURL2, metadataURL2);
@@ -166,34 +160,104 @@
                 console.log("toc")
                 // switch (prediction[0].className) {
                 switch (resultCom) {
-                    case "m16+m16":
-                        resultTitle = "정상설치 M16 앵커"
-                        resultExplain = "이상없음"
-                        resultCeleb = "M16 강도"
+                    case "ConcreteColumn+warning":
+                        resultTitle = "위험한 기둥의 균열"
+                        resultExplain = "원인 : 주로 지진에 의해 설계이상의 외력이 작용하여 생깁니다."
+                        resultCeleb = "대책 : 건물전체의 균열발생파악,보유내력의 재계산 등 전문가의 검토가 필요합니다."
                         break;
-                    case "m20+m20":
-                        resultTitle = "정상설치 M20 앵커"
-                        resultExplain = "이상없음"
-                        resultCeleb = "M20 강도"
+                    case "ConcreteColumn+general":
+                        resultTitle = "일반적인 기둥의 균열"
+                        resultExplain = "원인 : 노후화로 인한 철근의 팽창이나, 재료의 불량에 의해 발생합니다."
+                        resultCeleb = "대책 : 슈미트해머 등에 의한 콘크리트 강도를 조사하여, 표면을 보강할 수 있습니다."
                         break;
-                    case "nobolt+nobolt":
-                        resultTitle = "볼트설치불량"
-                        resultExplain = ""
-                        resultCeleb = ""
+                    case "ConcreteColumn+surface":
+                        resultTitle = "기둥의 마감균열"
+                        resultExplain = "원인 : 재료조합의 불량, 콘크리트의 노후화에 의해 마감이 탈락할 수 있습니다."
+                        resultCeleb = "대책 : 균열이 전반적으로 발생한다면 콘크리트 코어를 채취하여 조사하고 필요에 따라 수선할 수 있습니다."
                         break;
-                    case "noset+noset":
-                        resultTitle = "설치불량"
-                        resultExplain = ""
-                        resultCeleb = ""
+                    case "ConcreteColumn+clear":
+                        resultTitle = "이상없는 기둥"
+                        resultExplain = "경미한 노후화 현상을 보일 수 있으나, 구조적으로 안전한 상태입니다."
+                        resultCeleb = " "
                         break;
-                    case "nowasher+nowasher":
-                        resultTitle = "와셔설치불량"
-                        resultExplain = ""
-                        resultCeleb = ""
+                    case "ConcreteBeam+warning":
+                        resultTitle = "위험한 보의 균열"
+                        resultExplain = "원인 : 지진의 영향, 상부하중의이과대하거나 콘크리트 강도/철근량 부족일 수 있습니다."
+                        resultCeleb = "대책 : 건물전반의 균열상황을 파악하고 박리/박락이 발생하였으면 보수가 필요합니다."
+                        break;
+                    case "ConcreteBeam+general":
+                        resultTitle = "보의 일반적인 균열"
+                        resultExplain = "원인 : 오래된 건물에서 주로 보여지며, 철근의 팽창, 긴 길이 등이 원인 일 수 있습니다."
+                        resultCeleb = "대책 : 철근이 보인다면 콘크리트 등으로 보수할 필요가 있으나, 대부분 안전한 상태이며 지속적인 균열의 관찰이 필요합니다."
+                        break;
+                    case "ConcreteBeam+surface":
+                        resultTitle = "보의 마감(표면)균열"
+                        resultExplain = "원인 : 콘크리트가 굳으면서 겉표면이 수축하여 발생하거나, 일부 재료의 불량으로 발생합니다."
+                        resultCeleb = "대책 : 구조적으로 안전한 상태이나 건축물의 균열발생 상황을 파악하고 표면을 보수할 수 있습니다."
+                        break;
+                    case "ConcreteBeam+clear":
+                        resultTitle = "이상없는 보"
+                        resultExplain = "경미한 노후화 현상을 보일 수 있으나, 구조적으로 안전한 상태입니다."
+                        resultCeleb = " "
+                        break;
+                    case "ConcreteWall+warning":
+                        resultTitle = "위험한 벽의 균열"
+                        resultExplain = "원인 : 주로 지진에 의한 외부응력의 과대나 지반의 침하에 의해 발생합니다."
+                        resultCeleb = "대책 : 전문가에 의한 건물 전반의 내력검토, 균열발생량파악, 부동침하량 측정 필요하며 원인을 찾아 수선해야 합니다."
+                        break;
+                    case "ConcreteWall+general":
+                        resultTitle = "벽의 일반적인 균열"
+                        resultExplain = "원인 : 주변 구조재의 변형으로 인한 문이나 창문주변에 경사균열이 발생하고나 재료의 수축에 의한 깊은 균열이 관찰 될 수 있습니다."
+                        resultCeleb = "대책 : 부재의 변형이나 침하를 관찰하고, 마감재의 박락/누수의 유무를 살펴 이상이 있다면 보수합니다."
+                        break;
+                    case "ConcreteWall+surface":
+                        resultTitle = "벽의 마감(표면)균열"
+                        resultExplain = "원인 : 재료가 굳으면서 자연적으로 발생 할 수 있는 균열로 건조수축이 원인입니다."
+                        resultCeleb = "대책 : 구조적으로 안전하나 균열이 관통하는지 살펴보고, 에폭시나 코킹으로 보수 할 수 있습니다."
+                        break;
+                    case "ConcreteWall+clear":
+                        resultTitle = "이상없는 벽"
+                        resultExplain = "경미한 노후화 현상을 보일 수 있으나, 구조적으로 안전한 상태입니다."
+                        resultCeleb = " "
+                        break;
+                    case "BlockWall+general":
+                        resultTitle = "벽돌벽의 일반적인 균열"
+                        resultExplain = "노후화, 지반침하, 재료의 복합적인 불량이 원인."
+                        resultCeleb = "구조적으로 비교적 안전하나, 벽이 쓰러질 것 같다면 보수해야 합니다."
+                        break;
+                    case "BlockWall+surface":
+                        resultTitle = "벽돌벽의 표면 균열"
+                        resultExplain = "경과년수가 긴 벽에서 일반적으로 발생하며, 벽돌 사이의 모르타르가 들뜬 것이 원인."
+                        resultCeleb = "구조적으로 비교적 안전하나, 벽이 쓰러질 것 같다면 보수해야 합니다."
+                        break;
+                    case "BlockWall+clear":
+                        resultTitle = "이상없는 벽돌벽"
+                        resultExplain = "기울어짐이나 벽돌탈락이 발생하는지 지속적으로 관찰하시기 바랍니다."
+                        resultCeleb = " "
+                        break;
+                    case "Plane+clear":
+                        resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
+                        resultExplain = "1~2미터 간격에서 찍어주세요."
+                        resultCeleb = " "
+                        break;
+                    case "Plane+surface":
+                        resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
+                        resultExplain = "1~2미터 간격에서 찍어주세요."
+                        resultCeleb = " "
+                        break;
+                    case "Plane+general":
+                        resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
+                        resultExplain = "1~2미터 간격에서 찍어주세요."
+                        resultCeleb = " "
+                        break;
+                    case "Plane+warning":
+                        resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
+                        resultExplain = "1~2미터 간격에서 찍어주세요."
+                        resultCeleb = " "
                         break;
                     default:
-                        resultTitle = "오류"
-                        resultExplain = "다시 찍어주세요."
+                        resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
+                        resultExplain = "1~2미터 간격에서 찍어주세요."
                         resultCeleb = " "
                         //code
                 }
@@ -213,11 +277,9 @@
                
             }
         </script>
-
           
             
     </div>
-
     <div id="disqus_thread"></div>
     <script>
         /**
@@ -250,7 +312,5 @@
     <p class="text-copy"> 문의 : mill@dankook.ac.kr </p>
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5eb2082d012fa18b"></script>
-
 </body>
-
 </html>
