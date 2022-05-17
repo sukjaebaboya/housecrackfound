@@ -1,437 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>인공지능 균열측정기 - 인공지능으로 균열이 위험한지 알아보세요</title>
-
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-LLEB9RM521');
-    </script>
-
-</head>
-
-<body>
-    <div>Teachable Machine Image Model</div>
-    <button type="button" onclick="init()">Start</button>
-
-    <canvas id="facecanvas"></canvas>
-
-    <!-- Video that handles the browser access to the camera. The transforms mirror the feed -->
-
-    <video autoplay muted hidden playsinline id="video" style="
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    width: auto;
-    height: auto;">
-    </video>
-
-
-    <div id="webcam-container"></div>
-    <div id="label-container"></div>
-    <div id="label-container2"></div>
-    <div id="resultTitle"></div>
-    <div id="resultExplain"></div>
-    <div id="resultCeleb"></div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
-    <script type="text/javascript">
-        const URL = "https://teachablemachine.withgoogle.com/models/kx8FXr73V/"; //여기를 나중에 로컬 경로로 수정할 것. 구조부재인지 아닌지 여기서 파악.
-        const URL2 = "https://teachablemachine.withgoogle.com/models/iylRCPJXS/"; //여기를 나중에 로컬 경로로 수정할 것. 구조부재인지 아닌지 여기서 파악.
-        let model, webcam, labelContainer, maxPredictions, result1;
-        let model2, webcam2, labelContainer2, maxPredictions2, result2;
-        var img1 = document.createElement("img");
-        // Load the image model and setup the webcam
-        async function init() {
-            const modelURL = URL + "model.json";
-            const metadataURL = URL + "metadata.json";
-
-            const modelURL2 = URL2 + "model.json";
-            const metadataURL2 = URL2 + "metadata.json";
-
-            model = await tmImage.load(modelURL, metadataURL);
-            maxPredictions = model.getTotalClasses();
-            model2 = await tmImage.load(modelURL2, metadataURL2);
-            maxPredictions2 = model2.getTotalClasses();
-
-            // Convenience function to setup a webcam
-            /*const flip = true; // whether to flip the webcam
-            webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-            await webcam.setup(); // request access to the webcam
-            await webcam.play();
-            */
-
-            // append elements to the DOM
-
-
-
-            //window.requestAnimationFrame(loop);
-            if(window.requestAnimationFrame){ window.requestAnimationFrame(loop);}
-            else if(window.webkitRequestAnimationFrame){ window.webkitRequestAnimationFrame(loop);}
-            else if(window.mozRequestAnimationFrame){ window.mozRequestAnimationFrame(loop);}
-            else if(window.oRequestAnimationFrame){ window.oRequestAnimationFrame(loop);}
-            else if(window.msRequestAnimationFrame){ window.msRequestAnimationFrame(loop);}
-            else { alert("지원하지 않는 브라우저!");}
-
-            //document.getElementById("webcam-container").appendChild(webcam.canvas);
-
-            // load the model and metadata
-            // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
-            // or files from your local hard drive
-            // Note: the pose library adds "tmImage" object to your window (window.tmImage)
-
-
-            labelContainer = document.getElementById("label-container");
-            for (let i = 0; i < maxPredictions; i++) { // and class labels
-                labelContainer.appendChild(document.createElement("div"));
-            }
-            labelContainer2 = document.getElementById("label-container2");
-            for (let i = 0; i < maxPredictions2; i++) { // and class labels
-                labelContainer2.appendChild(document.createElement("div"));
-            }
-        }
-
-
-        function delay(time) {
-            return new Promise(resolve => setTimeout(resolve, time));
-        }
-
-        async function loop() {
-            window.speechSynthesis.cancel();
-            //webcam.update(); // update the webcam frame
-            var asdf = document.getElementsByTagName('video');
-            var imgCanvas = document.createElement('canvas');
-            imgCanvas.width = video.videoWidth;
-            imgCanvas.height = video.videoHeight;
-            imgCanvas.getContext('2d').drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-
-            const dataURL = imgCanvas.toDataURL();
-            img1.src = dataURL;
-
-            await predict();
-            await predict2();
-            resultsay();
-            await delay(1000); //시간 조절은 여기서.
-            imgCanvas.remove();
-            //window.requestAnimationFrame(loop);
-            if(window.requestAnimationFrame){ window.requestAnimationFrame(loop);}
-            else if(window.webkitRequestAnimationFrame){ window.webkitRequestAnimationFrame(loop);}
-            else if(window.mozRequestAnimationFrame){ window.mozRequestAnimationFrame(loop);}
-            else if(window.oRequestAnimationFrame){ window.oRequestAnimationFrame(loop);}
-            else if(window.msRequestAnimationFrame){ window.msRequestAnimationFrame(loop);}
-            else { alert("지원하지 않는 브라우저!");}
-        }
-        // run the webcam image through the image model
-        async function predict() {
-            // predict can take in an image, video or canvas html element
-            const prediction = await model.predict(img1, false);
-            for (let i = 0; i < maxPredictions; i++) {
-                const classPrediction =
-                    prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = classPrediction;
-            }
-            prediction.sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability));
-            result1 = (prediction[0].className);
-            console.log(result1)
-        }
-
-
-        // run the webcam image through the image model
-        async function predict2() {
-            // predict can take in an image, video or canvas html element
-            const prediction2 = await model2.predict(img1, false);
-            for (let i = 0; i < maxPredictions2; i++) {
-                const classPrediction2 =
-                    prediction2[i].className + ": " + prediction2[i].probability.toFixed(2);
-                labelContainer2.childNodes[i].innerHTML = classPrediction2;
-            }
-            prediction2.sort((a2, b2) => parseFloat(b2.probability) - parseFloat(a2.probability));
-            result2 = (prediction2[0].className);
-            console.log(result2)
-        }
-
-        let resultTitle, resultExplain, resultCeleb;
-        resultTitle = "";
-        resultExplain = "";
-        resultCeleb = "";
-
-        var resultTitleContainer = document.getElementById("resultTitle");
-        var txt1 = document.createTextNode(resultTitle);
-        resultTitleContainer.appendChild(document.createElement("h1")).appendChild(txt1);
-
-        var resultExplainContainer = document.getElementById("resultExplain");
-        var txt2 = document.createTextNode(resultExplain);
-        resultExplainContainer.appendChild(document.createElement("p")).appendChild(txt2);
-
-        var resultCelebContainer = document.getElementById("resultCeleb");
-        var txt3 = document.createTextNode(resultCeleb);
-        resultCelebContainer.appendChild(document.createElement("p")).appendChild(txt3);
-
-
-        async function resultsay() {
-            const resultCom = (result1 + "+" + result2)
-            console.log(resultCom)
-            console.log("toc")
-            // switch (prediction[0].className) {
-            switch (resultCom) {
-                case "ConcreteColumn+warning":
-                    resultTitle = "위험한 기둥의 균열"
-                    resultExplain = "원인 : 주로 지진에 의해 설계이상의 외력이 작용하여 생깁니다."
-                    resultCeleb = "대책 : 건물전체의 균열발생파악,보유내력의 재계산 등 전문가의 검토가 필요합니다."
-                    break;
-                case "ConcreteColumn+general":
-                    resultTitle = "일반적인 기둥의 균열"
-                    resultExplain = "원인 : 노후화로 인한 철근의 팽창이나, 재료의 불량에 의해 발생합니다."
-                    resultCeleb = "대책 : 슈미트해머 등에 의한 콘크리트 강도를 조사하여, 표면을 보강할 수 있습니다."
-                    break;
-                case "ConcreteColumn+surface":
-                    resultTitle = "기둥의 마감균열"
-                    resultExplain = "원인 : 재료조합의 불량, 콘크리트의 노후화에 의해 마감이 탈락할 수 있습니다."
-                    resultCeleb = "대책 : 균열이 전반적으로 발생한다면 콘크리트 코어를 채취하여 조사하고 필요에 따라 수선할 수 있습니다."
-                    break;
-                case "ConcreteColumn+clear":
-                    resultTitle = "이상없는 기둥"
-                    resultExplain = "경미한 노후화 현상을 보일 수 있으나, 구조적으로 안전한 상태입니다."
-                    resultCeleb = " "
-                    break;
-                case "ConcreteBeam+warning":
-                    resultTitle = "위험한 보의 균열"
-                    resultExplain = "원인 : 지진의 영향, 상부하중의이과대하거나 콘크리트 강도/철근량 부족일 수 있습니다."
-                    resultCeleb = "대책 : 건물전반의 균열상황을 파악하고 박리/박락이 발생하였으면 보수가 필요합니다."
-                    break;
-                case "ConcreteBeam+general":
-                    resultTitle = "보의 일반적인 균열"
-                    resultExplain = "원인 : 오래된 건물에서 주로 보여지며, 철근의 팽창, 긴 길이 등이 원인 일 수 있습니다."
-                    resultCeleb = "대책 : 철근이 보인다면 콘크리트 등으로 보수할 필요가 있으나, 대부분 안전한 상태이며 지속적인 균열의 관찰이 필요합니다."
-                    break;
-                case "ConcreteBeam+surface":
-                    resultTitle = "보의 마감(표면)균열"
-                    resultExplain = "원인 : 콘크리트가 굳으면서 겉표면이 수축하여 발생하거나, 일부 재료의 불량으로 발생합니다."
-                    resultCeleb = "대책 : 구조적으로 안전한 상태이나 건축물의 균열발생 상황을 파악하고 표면을 보수할 수 있습니다."
-                    break;
-                case "ConcreteBeam+clear":
-                    resultTitle = "이상없는 보"
-                    resultExplain = "경미한 노후화 현상을 보일 수 있으나, 구조적으로 안전한 상태입니다."
-                    resultCeleb = " "
-                    break;
-                case "ConcreteWall+warning":
-                    resultTitle = "위험한 벽의 균열"
-                    resultExplain = "원인 : 주로 지진에 의한 외부응력의 과대나 지반의 침하에 의해 발생합니다."
-                    resultCeleb = "대책 : 전문가에 의한 건물 전반의 내력검토, 균열발생량파악, 부동침하량 측정 필요하며 원인을 찾아 수선해야 합니다."
-                    break;
-                case "ConcreteWall+general":
-                    resultTitle = "벽의 일반적인 균열"
-                    resultExplain = "원인 : 주변 구조재의 변형으로 인한 문이나 창문주변에 경사균열이 발생하고나 재료의 수축에 의한 깊은 균열이 관찰 될 수 있습니다."
-                    resultCeleb = "대책 : 부재의 변형이나 침하를 관찰하고, 마감재의 박락/누수의 유무를 살펴 이상이 있다면 보수합니다."
-                    break;
-                case "ConcreteWall+surface":
-                    resultTitle = "벽의 마감(표면)균열"
-                    resultExplain = "원인 : 재료가 굳으면서 자연적으로 발생 할 수 있는 균열로 건조수축이 원인입니다."
-                    resultCeleb = "대책 : 구조적으로 안전하나 균열이 관통하는지 살펴보고, 에폭시나 코킹으로 보수 할 수 있습니다."
-                    break;
-                case "ConcreteWall+clear":
-                    resultTitle = "이상없는 벽"
-                    resultExplain = "경미한 노후화 현상을 보일 수 있으나, 구조적으로 안전한 상태입니다."
-                    resultCeleb = " "
-                    break;
-                case "BlockWall+general":
-                    resultTitle = "벽돌벽의 일반적인 균열"
-                    resultExplain = "노후화, 지반침하, 재료의 복합적인 불량이 원인."
-                    resultCeleb = "구조적으로 비교적 안전하나, 벽이 쓰러질 것 같다면 보수해야 합니다."
-                    break;
-                case "BlockWall+surface":
-                    resultTitle = "벽돌벽의 표면 균열"
-                    resultExplain = "경과년수가 긴 벽에서 일반적으로 발생하며, 벽돌 사이의 모르타르가 들뜬 것이 원인."
-                    resultCeleb = "구조적으로 비교적 안전하나, 벽이 쓰러질 것 같다면 보수해야 합니다."
-                    break;
-                case "BlockWall+clear":
-                    resultTitle = "이상없는 벽돌벽"
-                    resultExplain = "기울어짐이나 벽돌탈락이 발생하는지 지속적으로 관찰하시기 바랍니다."
-                    resultCeleb = " "
-                    break;
-                case "Plane+clear":
-                    resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
-                    resultExplain = "1~2미터 간격에서 찍어주세요."
-                    resultCeleb = " "
-                    break;
-                case "Plane+surface":
-                    resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
-                    resultExplain = "1~2미터 간격에서 찍어주세요."
-                    resultCeleb = " "
-                    break;
-                case "Plane+general":
-                    resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
-                    resultExplain = "1~2미터 간격에서 찍어주세요."
-                    resultCeleb = " "
-                    break;
-                case "Plane+warning":
-                    resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
-                    resultExplain = "1~2미터 간격에서 찍어주세요."
-                    resultCeleb = " "
-                    break;
-                default:
-                    resultTitle = "균열부위가 아닌 것 같아요. 좀 더 자세하게 보여주세요."
-                    resultExplain = "1~2미터 간격에서 찍어주세요."
-                    resultCeleb = " "
-                //code
-            }
-
-
-            var resultTitleContainer11 = document.getElementById("resultTitle");
-            resultTitleContainer11.firstChild.firstChild.nodeValue = resultTitle;
-
-            var resultTitleContainer22 = document.getElementById("resultExplain");
-            resultTitleContainer22.firstChild.firstChild.nodeValue = resultExplain;
-
-            var resultTitleContainer33 = document.getElementById("resultCeleb");
-            resultTitleContainer33.firstChild.firstChild.nodeValue = resultCeleb;
-
-            //let voices;
-            //voices = window.speechSynthesis.getVoices();
-
-            var msg = new SpeechSynthesisUtterance();
-            //msg.voice = voices[12];
-            msg.text = resultTitle;
-            msg.rate = 1.2;
-            //msg.lang = 'ko-KR';
-            window.speechSynthesis.speak(msg);
-            //return new Promise(resolve => {msg.onend = resolve;});
-
-
-
-            var msg2 = new SpeechSynthesisUtterance();
-            //msg2.voice = voices[12];
-            msg2.text = resultExplain;
-            msg2.rate = 1.2;
-            //msg2.lang = 'ko-KR';
-            window.speechSynthesis.speak(msg2);
-            //return new Promise(resolve => {msg2.onend = resolve;});
-
-
-
-
-            var msg3 = new SpeechSynthesisUtterance();
-            //msg3.voice = voices[12]; //목소리 톤이 아닌 이거 언어임.
-            msg3.text = resultCeleb;
-            msg3.rate = 1.2; //재생 속도는 여기서.
-            //msg3.lang = 'ko-KR'; //필요 X
-            window.speechSynthesis.speak(msg3);
-            //return new Promise(resolve => {msg3.onend = resolve;});
-
-
-
-
-            /*
-            for(var i = 0; i < voices.length; i++)
-            {
-            console.log(voices[i].name);
-            }
-            */
-
-
-        }
-
-
-
-
-
-
-
-
-    </script>
-
-    <script>
-
-        // Camera setup function - returns a Promise so we have to call it in an async function
-        async function setupCamera() {
-            // Find the video element on our HTML page
-            video = document.getElementById('video');
-
-            // Request the front-facing camera of the device
-            const stream = await navigator.mediaDevices.getUserMedia({
-                'audio': false,
-                'video': {
-                    facingMode: "environment",
-                    height: { ideal: 500 },
-                    width: { ideal: 500 },
-                },
-            });
-            video.srcObject = stream;
-
-            // Handle the video stream once it loads.
-            return new Promise((resolve) => {
-                video.onloadedmetadata = () => {
-                    resolve(video);
-                };
-            });
-        }
-
-        async function drawWebcamContinuous() {
-            ctx.drawImage(video, 0, 0);
-
-            //무한루프.
-
-
-
-            //반복 안함. why?
-            //init();
-            //predict();
-            //predict2();
-
-            //resultsay();
-            //console.log('testing2');
-
-            //await delay(5000); //시간 조절은 여기서.
-
-
-
-
-            requestAnimationFrame(drawWebcamContinuous);
-
-
-
-
-        }
-
-        var canvas;
-        var ctx;
-
-        async function main() {
-            // Set up front-facing camera
-            try{
-            await setupCamera();
-            video.play()
-            }catch{alert("카메라 인식 실패!");}
-
-            // Set up canvas for livestreaming
-            canvas = document.getElementById('facecanvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            ctx = canvas.getContext('2d');
-
-            // Start continuous drawing function
-            drawWebcamContinuous();
-
-            console.log("Camera setup done")
-        }
-
-        // Delay the camera request by a bit, until the main body has loaded
-        document.addEventListener("DOMContentLoaded", main);
-
-
-
-
-    </script>
-
-
-
-
-</body>
-
-</html>
+body {
+    font-family: 'Jua',sans-serif;
+    background-color: #eeeeee;
+    box-sizing: border-box;
+    color: #35465d;
+}
+.file-upload {
+    padding: 15% 3%;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: solid 1.5px #f6f7fa;
+    background-color: #f6f7fa;
+}
+.file-upload-btn {
+  width: 100%;
+  margin: 0;
+  color: #fff;
+  background: #1FB264;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  border-bottom: 4px solid #15824B;
+  transition: all .2s ease;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.file-upload-btn:hover {
+  background: #1AA059;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+.file-upload-btn:active {
+    border: 0;
+    transition: all 0.2s ease;
+}
+.file-upload-content {
+    display: none;
+    text-align: center;
+}
+.file-upload-input {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    opacity: 0;
+    cursor: pointer;
+}
+.image-upload-wrap {
+    width: 60%;
+    margin: 0 auto;
+    position: relative;
+    object-fit: contain;
+    border-radius: 10px;
+    border: dashed 1.5px #35465d;
+    background-color: #ffffff;
+}
+.image-dropping,
+.image-upload-wrap:hover {
+    background-color: #35465d82;
+    border: 1.5px dashed #ffffff;
+    margin-bottom : 30px;
+}
+.image-title-wrap {
+    padding: 15px 30px 15px 15px;
+    color: #222;
+    margin-bottom : 60px;
+}
+.drag-text {
+    text-align: center;
+}
+.drag-text h3 {
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.file-upload-image {
+  max-height: 60%;
+  max-width: 60%;
+  margin: auto;
+  padding: 10px;
+}
+
+.try-again-btn {
+  border-radius: 40px;
+  border: solid 1.5px #35465d;
+  background-color: #35465d;
+}
+
+.try-again-text {
+  display: block;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #ffffff;
+  padding: 4px 15px;
+}
+.remove-image {
+    width: 200px;
+    margin: 0;
+    color: #fff;
+    background: #cd4535;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    border-bottom: 4px solid #b02818;
+    transition: all 0.2s ease;
+    outline: none;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.remove-image:hover {
+  background: #c13b2a;
+  color: #ffffff;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+.remove-image:active {
+    border: 0;
+    transition: all 0.2s ease;
+}
+.section {
+    margin-top: 50px;
+    text-align: center;
+}
+       .title {
+    
+
+  line-height: 1.67;
+  text-align: center;
+  color: #35465d;
+
+}
+
+.subtitle {
+  line-height: 1.53;
+  text-align: center;
+  color: #35465d;
+}
+
+    @media screen and (max-width: 600px) {
+    html {
+        font-size: 10px;
+    }
+
+}
+
+.image-upload-wrap {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 20px;
+    margin-bottom: 100px;
+    object-fit: contain;
+    border-radius: 10px;
+    border: dashed 4px #35465d;
+    background-color: #ffffff;
+}
+.drag-text {
+    width: 60%;
+    font-size: 1rem;
+    text-align: center;
+    color: #35465d;
+    margin: 0 auto;
+}
+.drag-text h3 {
+    font-weight: 50%;
+    color: #35465d;       
+    }
+.result-message {
+    font-size: 1.7rem;
+}
+.result-message2 {
+   font-size: 1.3rem;
+   max-height: 60%;
+   max-width: 80%;
+   margin: 0 auto;
+}
+.text-copy{
+
+    width: 60%;
+    font-size: 1rem;
+    text-align: center;
+    color: #35465d;
+    margin: 0 auto;
+    }
+.sr-only{
+        font-size: 1.2rem;
+}
+.text-center{
+     font-size: 1.4rem;
+    
+}
+.dsq-app2938{
+    margin-top: 20px;
+    min-width: 60% !important;
+    width: 60%;
+    font-size: 1rem;
+    text-align: center;
+    color: #35465d;
+    margin: 0 auto;
+}
+
+.kakao{
+        margin-top: 20px;
+    margin: 0 auto;
+        text-align: center;
+}
